@@ -13,7 +13,7 @@ public class TestSendToDevice
     {
         long facebookId = 100002895406629l;
         
-        String msg = "Testandoooo.....";
+        String msg = "Opa 2!";
 
         Message message = new Message.Builder().addData("msg", facebookId + Constants.SEMICOLON + msg).build();
         GCMSender.send(Constants.DEVICE_REGISTRATION_ID, message);
