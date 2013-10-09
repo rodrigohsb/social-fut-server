@@ -7,11 +7,11 @@ public class Position
 {
     private int id;
 
-    private String positionName;
+    private String name;
 
-    public Position(int id, String positionName)
+    public Position(int id, String name)
     {
         this.id = id;
-        this.positionName = positionName;
+        this.name = name;
     }
 }
