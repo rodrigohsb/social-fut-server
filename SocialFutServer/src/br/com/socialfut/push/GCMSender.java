@@ -9,14 +9,8 @@ import com.google.android.gcm.server.Sender;
 
 public class GCMSender
 {
-    /**
-     * 
-     * Faz o pedido p/ o GCM de envio de msg para o device.
-     * 
-     * @param deviceId
-     * @param msg
-     */
-    public static void send(String deviceId, Message msg)
+
+    public static void sendMessage(String deviceId, Message msg)
     {
         Sender sender = new Sender(Constants.API_KEY);
         try
