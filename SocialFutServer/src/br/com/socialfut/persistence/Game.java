@@ -1,16 +1,15 @@
 package br.com.socialfut.persistence;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Data;
 
 @Data
 @XmlRootElement
-public class Player
+public class Game
 {
     private long id;
 
-    private String deviceRegistrationId;
+    private float value;
 
-    private Position position;
+    private int qntRates;
 }
