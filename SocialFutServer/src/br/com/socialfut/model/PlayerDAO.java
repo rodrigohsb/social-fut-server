@@ -1,17 +1,54 @@
 package br.com.socialfut.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
+import br.com.socialfut.persistence.Player;
 import br.com.socialfut.persistence.Position;
-import lombok.Data;
 
-@Data
 @XmlRootElement
 public class PlayerDAO
 {
-    private long id;
+    private Player player = new Player();
 
-    private String deviceRegistrationId;
+    public List<Player> getAllPlayers()
+    {
+        return null;
+    }
 
-    Position position;
+    public Player getPlayer(long id)
+    {
+        return null;
+    }
+
+    public void updateDevice(long id, String devRegId)
+    {
+
+    }
+
+    public void createPlayer(long id, String devRegId)
+    {
+
+    }
+
+    public float getRate(long id)
+    {
+        return id;
+    }
+
+    public Position getPosition(long userId)
+    {
+        return null;
+    }
+
+    public void setPosition(long userId, int position)
+    {
+
+    }
+
+    public List<Player> getPlayersByGame(long gameId)
+    {
+        return null;
+    }
 }
