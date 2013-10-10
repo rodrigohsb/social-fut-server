@@ -1,9 +1,7 @@
 package br.com.socialfut.jdbc;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory
@@ -25,10 +23,8 @@ public class ConnectionFactory
 
     public static Connection getConnection()
     {
-
         try
         {
-
             if (conn == null)
             {
                 prop = new Properties();
@@ -47,23 +43,12 @@ public class ConnectionFactory
                 builder.append("jdbc:mysql://").append(host).append(":3306/").append(dbName);
 
                 conn = DriverManager.getConnection(builder.toString(), userName, password);
-
-                return conn;
             }
-            return null;
         }
-        catch (ClassNotFoundException e)
+        catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            System.err.println("Erro ao conectar na base de dados." + e.getMessage());
         }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        catch (IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return conn;
     }
 }
