@@ -44,7 +44,7 @@ public class PlayerResource
         playerWS.setPosition(userId, position);
         return "OK";
     }
-
+    
     @GET
     @Path("/insert/{facebookId}/{deviceRegId}")
     public String insert(@PathParam("facebookId") long facebookId, @PathParam("deviceRegId") String deviceRegId)

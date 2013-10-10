@@ -25,7 +25,6 @@ public class GameResource
     public ResponseBuilder creatGame(@PathParam("gameId") long gameId)
     {
         gameWS.creatGame(gameId);
-
         return Response.ok();
     }
 
@@ -71,35 +70,19 @@ public class GameResource
     }
 
     @GET
-    @Path("/rateByUser/{id}")
-    @Produces("application/json")
-    public float getRateByUser(@PathParam("id") long id)
-    {
-        return gameWS.getRateByUser(id);
-    }
-
-    @GET
-    @Path("/players")
-    @Produces("application/json")
-    public List<Integer> getPlayer()
-    {
-        return gameWS.getRates();
-    }
-
-    @GET
-    @Path("/ratesByGame/{gameId}")
-    @Produces("application/json")
-    public List<Integer> updateRate(@PathParam("gameId") long gameId)
-    {
-        return gameWS.getRatesByGame(gameId);
-    }
-
-    @GET
     @Path("/rates")
     @Produces("application/json")
     public List<Integer> getRates()
     {
         return gameWS.getRates();
+    }
+
+    @GET
+    @Path("/rateByUser/{id}")
+    @Produces("application/json")
+    public String getRateByUser(@PathParam("id") long id)
+    {
+        return String.valueOf(gameWS.getRateByUser(id));
     }
 
     @GET
