@@ -12,10 +12,10 @@ public class GameWS
         gameDAO.creatGame(id);
     }
 
-    public void addPlayerToGame(long gameId, long userId)
+    public String addPlayerToGame(long gameId, long userId)
     {
         GameDAO gameDAO = new GameDAO();
-        gameDAO.addPlayerToGame(gameId, userId);
+        return gameDAO.addPlayerToGame(gameId, userId);
     }
 
     public void removePlayerFromGame(long gameId, long userId)
@@ -32,20 +32,17 @@ public class GameWS
 
     public List<Integer> getRatesByGame(long gameId)
     {
-        GameDAO gameDAO = new GameDAO();
-        return gameDAO.getRatesByGame(gameId);
+        return new GameDAO().getRatesByGame(gameId);
     }
 
     public void updateRating(long userId, long gameId, float rate)
     {
-        GameDAO gameDAO = new GameDAO();
-        gameDAO.updateRating(userId, gameId, rate);
+        new GameDAO().updateRating(userId, gameId, rate);
     }
 
     public float getRateByUser(long userId)
     {
-        GameDAO gameDAO = new GameDAO();
-        return gameDAO.getRateByUser(userId);
+        return new GameDAO().getRateByUser(userId);
     }
 
     public List<Integer> getRates()
