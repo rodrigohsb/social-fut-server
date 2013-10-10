@@ -51,4 +51,17 @@ public class PlayerDAO
     {
         return null;
     }
+
+    /**
+     * 
+     * Obtem a qualificacao de um jogador.
+     * 
+     * @param userId
+     * @return
+     */
+    public float getRateByUser(long userId)
+    {
+        return 0;
+    }
+
 }
