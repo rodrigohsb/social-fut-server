@@ -52,7 +52,15 @@ public class ConnectionFactory
             }
             return null;
         }
-        catch (ClassNotFoundException | SQLException | IOException e)
+        catch (ClassNotFoundException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch (IOException e)
         {
             System.out.println(e.getMessage());
         }
