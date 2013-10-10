@@ -30,10 +30,9 @@ public class GameResource
 
     @GET
     @Path("/addPlayerToGame/{gameId}/{userId}")
-    public ResponseBuilder addPlayerToGame(@PathParam("gameId") long gameId, @PathParam("userId") long userId)
+    public String addPlayerToGame(@PathParam("gameId") long gameId, @PathParam("userId") long userId)
     {
-        gameWS.addPlayerToGame(gameId, userId);
-        return Response.ok();
+        return gameWS.addPlayerToGame(gameId, userId);
     }
 
     @GET
