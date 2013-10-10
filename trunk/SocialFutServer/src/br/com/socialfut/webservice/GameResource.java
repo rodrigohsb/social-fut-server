@@ -9,6 +9,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import br.com.socialfut.persistence.Player;
+import br.com.socialfut.push.GCMSender;
+import br.com.socialfut.utils.Constants;
+
+import com.google.android.gcm.server.Message;
+
 @Path("/game")
 public class GameResource
 {
@@ -94,6 +100,46 @@ public class GameResource
     public List<Integer> getRates()
     {
         return gameWS.getRates();
+    }
+
+    @GET
+    @Path("/confirmation/{from}/{gameId}")
+    public String sendConfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
+    {
+
+        String msg = Constants.CONFIRMATION;
+
+        // TODO incluir o jogador na tabela "Game_Player"
+
+        PlayerWS playerWS = new PlayerWS();
+        List<Player> players = playerWS.getPlayersByGame(gameId);
+
+        for (Player p : players)
+        {
+            Message message = new Message.Builder().addData("msg", userId + Constants.SEMICOLON + msg).build();
+            GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
+        }
+        return "OK";
+    }
+
+    @GET
+    @Path("/desconfirmation/{from}/{gameId}")
+    public String sendDesconfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
+    {
+
+        String msg = Constants.DESCONFIRMATION;
+
+        // TODO Retirar o jogador da tabela "Game_Player"
+
+        PlayerWS playerWS = new PlayerWS();
+        List<Player> players = playerWS.getPlayersByGame(gameId);
+
+        for (Player p : players)
+        {
+            Message message = new Message.Builder().addData("msg", userId + Constants.SEMICOLON + msg).build();
+            GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
+        }
+        return "OK";
     }
 
 }
