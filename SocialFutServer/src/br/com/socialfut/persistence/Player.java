@@ -12,5 +12,7 @@ public class Player
 
     private String deviceRegistrationId;
 
-    private Position position;
+    private int position;
+
+    private float rating;
 }
