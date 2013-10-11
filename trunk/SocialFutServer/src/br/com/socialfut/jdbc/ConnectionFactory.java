@@ -27,28 +27,28 @@ public class ConnectionFactory
         {
             if (conn == null)
             {
-                prop = new Properties();
+                // prop = new Properties();
+                // prop.load(ConnectionFactory.class.getResourceAsStream("db_data.properties"));
+                // host = prop.getProperty("app.host");
+                // dbName = prop.getProperty("app.dbName");
+                // userName = prop.getProperty("app.username");
+                // password = prop.getProperty("app.password");
+                // driver = prop.getProperty("app.driver");
 
-                prop.load(ConnectionFactory.class.getResourceAsStream("../resources/db_data.properties"));
-
-                host = prop.getProperty("app.host");
-                dbName = prop.getProperty("app.dbName");
-                userName = prop.getProperty("app.username");
-                password = prop.getProperty("app.password");
-                driver = prop.getProperty("app.driver");
-
-                Class.forName(driver);
+                Class.forName("com.mysql.jdbc.Driver");
 
                 StringBuilder builder = new StringBuilder();
-                builder.append("jdbc:mysql://").append(host).append(":3306/").append(dbName);
+                builder.append("jdbc:mysql://").append("localhost").append(":3306/").append("socialfut");
 
-                conn = DriverManager.getConnection(builder.toString(), userName, password);
+                conn = DriverManager.getConnection(builder.toString(), "root", null);
+
             }
         }
         catch (Exception e)
         {
-            System.err.println("Erro ao conectar na base de dados.");
+            e.printStackTrace();
         }
         return conn;
     }
+
 }
