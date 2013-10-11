@@ -1,50 +1,138 @@
 package br.com.socialfut.model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
+import br.com.socialfut.jdbc.ConnectionFactory;
 import br.com.socialfut.persistence.Player;
-import br.com.socialfut.persistence.Position;
 
-@XmlRootElement
 public class PlayerDAO
 {
-    private Player player = new Player();
+    private Connection conn;
 
-    public List<Player> getAllPlayers()
+    public PlayerDAO()
     {
-        return null;
+        this.conn = ConnectionFactory.getConnection();
     }
 
-    public Player getPlayer(long id)
+    public Player getPlayer(long userId)
     {
-        return null;
+        StringBuilder query = new StringBuilder("select position, rating from player(nolock)");
+        query.append(" where id = " + userId);
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        Player p = new Player();
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query.toString());
+
+            while (rs.next())
+            {
+                float rating = rs.getFloat("rating");
+                int position = rs.getInt("position");
+                p.setRating(rating);
+                p.setPosition(position);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        closeAll(conn, stmt, rs);
+
+        return p;
     }
 
-    public void updateDevice(long id, String devRegId)
+    private Player getPlayerById(long userId)
     {
+        StringBuilder query = new StringBuilder("select * from player(nolock)");
+        query.append(" where id = " + userId);
 
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        Player p = new Player();
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query.toString());
+
+            while (rs.next())
+            {
+                float rating = rs.getFloat("rating");
+                int position = rs.getInt("position");
+                p.setRating(rating);
+                p.setPosition(position);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        closeAll(conn, stmt, rs);
+
+        return p;
     }
 
-    public void createPlayer(long id, String devRegId)
+    public void updateDevice(long userId, String devRegId)
     {
+        StringBuilder query = new StringBuilder("update player");
+        query.append(" set deviceRegistrationId = " + devRegId);
+        query.append(" where id = " + userId);
 
+        Statement stmt = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(query.toString());
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        closeAll(conn, stmt, null);
     }
 
-    public float getRate(long id)
+    public void createPlayer(long userId, String devRegId, int position)
     {
-        return id;
+        StringBuilder query = new StringBuilder("insert into player");
+        query.append(" values(" + userId + "," + devRegId + "," + position + "," + 0);
+
+        Statement stmt = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(query.toString());
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        closeAll(conn, stmt, null);
     }
 
-    public Position getPosition(long userId)
+    public float getRating(long userId)
     {
-        return null;
+        Player p = this.getPlayerById(userId);
+        return p.getRating();
     }
 
-    public void setPosition(long userId, int position)
+    public int getPosition(long userId)
     {
-
+        Player p = this.getPlayerById(userId);
+        return p.getPosition();
     }
 
     public List<Player> getPlayersByGame(long gameId)
@@ -52,16 +140,28 @@ public class PlayerDAO
         return null;
     }
 
-    /**
-     * 
-     * Obtem a qualificacao de um jogador.
-     * 
-     * @param userId
-     * @return
-     */
-    public float getRateByUser(long userId)
+    private static void closeAll(Connection conn, Statement ps, ResultSet rs)
     {
-        return 0;
-    }
+        try
+        {
+            if (conn != null)
+            {
+                conn.close();
+            }
 
+            if (ps != null)
+            {
+                ps.close();
+            }
+
+            if (rs != null)
+            {
+                rs.close();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }
