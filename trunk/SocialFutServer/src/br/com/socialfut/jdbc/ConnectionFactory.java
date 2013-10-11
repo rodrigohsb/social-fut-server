@@ -47,7 +47,7 @@ public class ConnectionFactory
         }
         catch (Exception e)
         {
-            System.err.println("Erro ao conectar na base de dados." + e.getMessage());
+            System.err.println("Erro ao conectar na base de dados.");
         }
         return conn;
     }
