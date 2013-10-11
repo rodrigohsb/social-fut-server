@@ -20,7 +20,7 @@ public class PlayerDAO
 
     public Player getPlayer(long userId)
     {
-        StringBuilder query = new StringBuilder("select position, rating from player(nolock)");
+        StringBuilder query = new StringBuilder("select position, rating, deviceRegistrationId from player(nolock)");
         query.append(" where id = " + userId);
 
         Statement stmt = null;
@@ -37,8 +37,10 @@ public class PlayerDAO
             {
                 float rating = rs.getFloat("rating");
                 int position = rs.getInt("position");
+                String deviceReg = rs.getString("deviceRegistrationId");
                 p.setRating(rating);
                 p.setPosition(position);
+                p.setDeviceRegistrationId(deviceReg);
             }
         }
         catch (SQLException e)
