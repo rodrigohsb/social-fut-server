@@ -12,7 +12,7 @@ public class GamePlayer
 
     private long gameId;
 
-    private Player player;
+    private int player_id;
 
     private float value;
 
