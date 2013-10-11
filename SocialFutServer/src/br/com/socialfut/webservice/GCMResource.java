@@ -20,7 +20,7 @@ public class GCMResource
     {
 
         PlayerWS playerWS = new PlayerWS();
-        Player player = playerWS.buscar(to);
+        Player player = playerWS.getPlayer(to);
 
         Message message = new Message.Builder().addData("msg", from + Constants.SEMICOLON + msg).build();
         GCMSender.sendMessage(player.getDeviceRegistrationId(), message);
