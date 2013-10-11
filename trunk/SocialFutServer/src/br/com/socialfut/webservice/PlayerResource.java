@@ -1,7 +1,5 @@
 package br.com.socialfut.webservice;
 
-import java.util.ArrayList;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,7 +18,7 @@ public class PlayerResource
     @Produces("application/json")
     public Player getPlayer(@PathParam("id") long id)
     {
-        Player player = playerWS.buscar(id);
+        Player player = playerWS.getPlayer(id);
 
         if (player == null)
         {
@@ -30,26 +28,11 @@ public class PlayerResource
     }
 
     @GET
-    @Path("/buscarTodos")
-    @Produces("application/json")
-    public ArrayList<Player> getAllPlayers()
+    @Path("/insert/{facebookId}/{deviceRegId}/{position}")
+    public String insert(@PathParam("facebookId") long facebookId, @PathParam("deviceRegId") String deviceRegId,
+            @PathParam("position") int position)
     {
-        return (ArrayList<Player>) playerWS.getAllPlayers();
-    }
-
-    @GET
-    @Path("/position/{id}/{position}")
-    public String setPosition(@PathParam("id") long userId, @PathParam("position") int position)
-    {
-        playerWS.setPosition(userId, position);
-        return "OK";
-    }
-    
-    @GET
-    @Path("/insert/{facebookId}/{deviceRegId}")
-    public String insert(@PathParam("facebookId") long facebookId, @PathParam("deviceRegId") String deviceRegId)
-    {
-        playerWS.createPlayer(facebookId, deviceRegId);
+        playerWS.createPlayer(facebookId, deviceRegId, position);
         return "OK";
     }
 }

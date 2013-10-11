@@ -1,6 +1,7 @@
 package br.com.socialfut.webservice;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,14 +20,6 @@ import com.google.android.gcm.server.Message;
 public class GameResource
 {
     GameWS gameWS = new GameWS();
-
-    @GET
-    @Path("/creatGame/{gameId}")
-    public ResponseBuilder creatGame(@PathParam("gameId") long gameId)
-    {
-        gameWS.creatGame(gameId);
-        return Response.ok();
-    }
 
     @GET
     @Path("/addPlayerToGame/{gameId}/{userId}")
@@ -54,7 +47,7 @@ public class GameResource
     @GET
     @Path("/getRatesByGame/{gameId}")
     @Produces("application/json")
-    public List<Integer> getRatesByGame(@PathParam("gameId") long gameId)
+    public Map<Long, Float> getRatesByGame(@PathParam("gameId") long gameId)
     {
         return gameWS.getRatesByGame(gameId);
     }
@@ -71,7 +64,7 @@ public class GameResource
     @GET
     @Path("/rates")
     @Produces("application/json")
-    public List<Integer> getRates()
+    public List<Player> getRates()
     {
         return gameWS.getRates();
     }

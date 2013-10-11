@@ -1,53 +1,49 @@
 package br.com.socialfut.webservice;
 
 import java.util.List;
+import java.util.Map;
 
-import br.com.socialfut.model.GameDAO;
+import br.com.socialfut.model.GamePlayerDAO;
+import br.com.socialfut.persistence.Player;
 
 public class GameWS
 {
-    public void creatGame(long id)
-    {
-        GameDAO gameDAO = new GameDAO();
-        gameDAO.creatGame(id);
-    }
-
     public String addPlayerToGame(long gameId, long userId)
     {
-        GameDAO gameDAO = new GameDAO();
-        return gameDAO.addPlayerToGame(gameId, userId);
+        GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
+        return gamePlayerDAO.addPlayerToGame(gameId, userId);
     }
 
     public void removePlayerFromGame(long gameId, long userId)
     {
-        GameDAO gameDAO = new GameDAO();
-        gameDAO.removePlayerFromGame(gameId, userId);
+        GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
+        gamePlayerDAO.removePlayerFromGame(gameId, userId);
     }
 
     public float getRateByGame(long gameId, long userId)
     {
-        GameDAO gameDAO = new GameDAO();
-        return gameDAO.getRateByGame(gameId, userId);
+        GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
+        return gamePlayerDAO.getRateByGame(gameId, userId);
     }
 
-    public List<Integer> getRatesByGame(long gameId)
+    public Map<Long, Float> getRatesByGame(long gameId)
     {
-        return new GameDAO().getRatesByGame(gameId);
+        return new GamePlayerDAO().getRatesByGame(gameId);
     }
 
     public void updateRating(long userId, long gameId, float rate)
     {
-        new GameDAO().updateRating(userId, gameId, rate);
+        new GamePlayerDAO().updateRating(userId, gameId, rate);
     }
 
     public float getRateByUser(long userId)
     {
-        return new GameDAO().getRateByUser(userId);
+        return new GamePlayerDAO().getRateByUser(userId);
     }
 
-    public List<Integer> getRates()
+    public List<Player> getRates()
     {
-        GameDAO gameDAO = new GameDAO();
-        return gameDAO.getRates();
+        GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
+        return gamePlayerDAO.getRates();
     }
 }
