@@ -15,6 +15,7 @@ import br.com.socialfut.push.GCMSender;
 import br.com.socialfut.utils.Constants;
 
 import com.google.android.gcm.server.Message;
+import com.google.gson.Gson;
 
 @Path("/game")
 public class GameResource
@@ -74,7 +75,7 @@ public class GameResource
     @Produces("application/json")
     public String getRateByUser(@PathParam("id") long id)
     {
-        return String.valueOf(gameWS.getRateByUser(id));
+        return new Gson().toJson(String.valueOf(gameWS.getRateByUser(id)));
     }
 
     @GET
