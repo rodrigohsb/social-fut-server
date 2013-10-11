@@ -31,37 +31,40 @@ public class GamePlayerDAO
      */
     public float getRateByUser(long userId)
     {
-        StringBuilder query = new StringBuilder("select value,qnt_rates from game_player(nolock)");
-        query.append(" where player_id = " + userId);
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        float totalValue = 0;
-        int totalQntRates = 0;
-
-        try
-        {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            while (rs.next())
-            {
-                float value = rs.getFloat("value");
-                totalValue += value;
-
-                int qntRates = rs.getInt("qnt_rates");
-                totalQntRates += qntRates;
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        closeAll(conn, stmt, rs);
-
-        return (totalValue == 0 || totalQntRates == 0) ? 0 : (totalValue / totalQntRates);
+        
+        return 3.5f; 
+        
+//        StringBuilder query = new StringBuilder("select value,qnt_rates from game_player(nolock)");
+//        query.append(" where player_id = " + userId);
+//
+//        Statement stmt = null;
+//        ResultSet rs = null;
+//
+//        float totalValue = 0;
+//        int totalQntRates = 0;
+//
+//        try
+//        {
+//            stmt = conn.createStatement();
+//            rs = stmt.executeQuery(query.toString());
+//
+//            while (rs.next())
+//            {
+//                float value = rs.getFloat("value");
+//                totalValue += value;
+//
+//                int qntRates = rs.getInt("qnt_rates");
+//                totalQntRates += qntRates;
+//            }
+//        }
+//        catch (SQLException e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        closeAll(conn, stmt, rs);
+//
+//        return (totalValue == 0 || totalQntRates == 0) ? 0 : (totalValue / totalQntRates);
     }
 
     // TODO Fazer!!
@@ -271,10 +274,8 @@ public class GamePlayerDAO
     public String addPlayerToGame(long gameId, long userId)
     {
 
-        Player p = new PlayerDAO().getPlayer(userId);
-
         StringBuilder query = new StringBuilder("insert into game_player");
-        query.append(" values(" + p + "," + gameId + "," + 0 + "," + 0 + ")");
+        query.append(" values(" + userId + "," + gameId + "," + 0 + "," + 0 + ")");
 
         Statement stmt = null;
         boolean inseriu = false;
