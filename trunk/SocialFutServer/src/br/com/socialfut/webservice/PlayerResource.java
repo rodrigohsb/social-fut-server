@@ -32,7 +32,7 @@ public class PlayerResource
     public String insert(@PathParam("facebookId") long facebookId, @PathParam("deviceRegId") String deviceRegId,
             @PathParam("position") int position)
     {
-        playerWS.createPlayer(facebookId, deviceRegId, position);
+//        playerWS.createPlayer(facebookId, deviceRegId, position);
         return "OK";
     }
 }
