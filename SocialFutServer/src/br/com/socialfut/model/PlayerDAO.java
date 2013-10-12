@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import br.com.socialfut.jdbc.ConnectionFactory;
 import br.com.socialfut.persistence.Player;
@@ -18,15 +17,15 @@ public class PlayerDAO
         this.conn = ConnectionFactory.getConnection();
     }
 
-    public Player getPlayer(long userId)
+    public Player getPlayerById(long userId)
     {
-        StringBuilder query = new StringBuilder("select position, rating, deviceRegistrationId from player(nolock)");
+        StringBuilder query = new StringBuilder("select * from player(nolock)");
         query.append(" where id = " + userId);
 
         Statement stmt = null;
         ResultSet rs = null;
 
-        Player p = new Player();
+        Player player = new Player();
 
         try
         {
@@ -38,9 +37,12 @@ public class PlayerDAO
                 float rating = rs.getFloat("rating");
                 int position = rs.getInt("position");
                 String deviceReg = rs.getString("deviceRegistrationId");
-                p.setRating(rating);
-                p.setPosition(position);
-                p.setDeviceRegistrationId(deviceReg);
+
+                player.setId(userId);
+                player.setRating(rating);
+                player.setPosition(position);
+                player.setDeviceRegistrationId(deviceReg);
+
             }
         }
         catch (SQLException e)
@@ -50,46 +52,33 @@ public class PlayerDAO
 
         closeAll(conn, stmt, rs);
 
-        return p;
-    }
-
-    private Player getPlayerById(long userId)
-    {
-        StringBuilder query = new StringBuilder("select * from player(nolock)");
-        query.append(" where id = " + userId);
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        Player p = new Player();
-
-        try
-        {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            while (rs.next())
-            {
-                float rating = rs.getFloat("rating");
-                int position = rs.getInt("position");
-                p.setRating(rating);
-                p.setPosition(position);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        closeAll(conn, stmt, rs);
-
-        return p;
+        return player;
     }
 
     public void updateDevice(long userId, String devRegId)
     {
         StringBuilder query = new StringBuilder("update player");
         query.append(" set deviceRegistrationId = " + devRegId);
+        query.append(" where id = " + userId);
+
+        Statement stmt = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(query.toString());
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        closeAll(conn, stmt, null);
+    }
+
+    public void updateRating(long userId, float rating)
+    {
+        StringBuilder query = new StringBuilder("update player");
+        query.append(" set rating = " + rating);
         query.append(" where id = " + userId);
 
         Statement stmt = null;
@@ -135,11 +124,6 @@ public class PlayerDAO
     {
         Player p = this.getPlayerById(userId);
         return p.getPosition();
-    }
-
-    public List<Player> getPlayersByGame(long gameId)
-    {
-        return null;
     }
 
     private static void closeAll(Connection conn, Statement ps, ResultSet rs)

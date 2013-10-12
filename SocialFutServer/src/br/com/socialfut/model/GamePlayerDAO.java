@@ -32,39 +32,37 @@ public class GamePlayerDAO
     public float getRateByUser(long userId)
     {
         
-        return 3.5f; 
-        
-//        StringBuilder query = new StringBuilder("select value,qnt_rates from game_player(nolock)");
-//        query.append(" where player_id = " + userId);
-//
-//        Statement stmt = null;
-//        ResultSet rs = null;
-//
-//        float totalValue = 0;
-//        int totalQntRates = 0;
-//
-//        try
-//        {
-//            stmt = conn.createStatement();
-//            rs = stmt.executeQuery(query.toString());
-//
-//            while (rs.next())
-//            {
-//                float value = rs.getFloat("value");
-//                totalValue += value;
-//
-//                int qntRates = rs.getInt("qnt_rates");
-//                totalQntRates += qntRates;
-//            }
-//        }
-//        catch (SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        closeAll(conn, stmt, rs);
-//
-//        return (totalValue == 0 || totalQntRates == 0) ? 0 : (totalValue / totalQntRates);
+        StringBuilder query = new StringBuilder("select value,qnt_rates from game_player(nolock)");
+        query.append(" where player_id = " + userId);
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        float totalValue = 0;
+        int totalQntRates = 0;
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query.toString());
+
+            while (rs.next())
+            {
+                float value = rs.getFloat("value");
+                totalValue += value;
+
+                int qntRates = rs.getInt("qnt_rates");
+                totalQntRates += qntRates;
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        closeAll(conn, stmt, rs);
+
+        return (totalValue == 0 || totalQntRates == 0) ? 0 : (totalValue / totalQntRates);
     }
 
     // TODO Fazer!!
@@ -332,6 +330,11 @@ public class GamePlayerDAO
             return "Removido com sucesso!";
         }
         return "Problemas ao remover jogador!";
+    }
+    
+    public List<Player> getPlayersByGame(long gameId)
+    {
+        return null;
     }
 
     private static void closeAll(Connection conn, Statement ps, ResultSet rs)
