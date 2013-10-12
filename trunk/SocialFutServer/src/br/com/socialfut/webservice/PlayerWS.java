@@ -1,7 +1,5 @@
 package br.com.socialfut.webservice;
 
-import java.util.List;
-
 import br.com.socialfut.model.PlayerDAO;
 import br.com.socialfut.persistence.Player;
 
@@ -15,24 +13,37 @@ public class PlayerWS
 
     public void updateDevice(long userId, String deviceRegId)
     {
-        Player player = this.getPlayer(userId);
+
+        PlayerDAO playerDAO = new PlayerDAO();
+        Player player = playerDAO.getPlayerById(userId);
 
         if (player.getDeviceRegistrationId() != deviceRegId)
         {
-            PlayerDAO playerDAO = new PlayerDAO();
             playerDAO.updateDevice(userId, deviceRegId);
         }
+    }
+
+    public void updateRating(long userId, float rating)
+    {
+        new PlayerDAO().updateRating(userId, rating);
     }
 
     public Player getPlayer(long id)
     {
         PlayerDAO playerDAO = new PlayerDAO();
-        return playerDAO.getPlayer(id);
+        return playerDAO.getPlayerById(id);
     }
 
-    public List<Player> getPlayersByGame(long gameId)
+    public float getRating(long userId)
     {
-        PlayerDAO playersDAO = new PlayerDAO();
-        return playersDAO.getPlayersByGame(gameId);
+        PlayerDAO playerDAO = new PlayerDAO();
+        return playerDAO.getRating(userId);
     }
+
+    public int getPosition(long userId)
+    {
+        PlayerDAO playerDAO = new PlayerDAO();
+        return playerDAO.getPosition(userId);
+    }
+
 }

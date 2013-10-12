@@ -14,11 +14,11 @@ public class PlayerResource
     PlayerWS playerWS = new PlayerWS();
 
     @GET
-    @Path("/search/{id}")
+    @Path("/search/{userId}")
     @Produces("application/json")
-    public Player getPlayer(@PathParam("id") long id)
+    public Player getPlayer(@PathParam("userId") long userId)
     {
-        Player player = playerWS.getPlayer(id);
+        Player player = playerWS.getPlayer(userId);
 
         if (player == null)
         {
@@ -28,11 +28,43 @@ public class PlayerResource
     }
 
     @GET
-    @Path("/insert/{facebookId}/{deviceRegId}/{position}")
-    public String insert(@PathParam("facebookId") long facebookId, @PathParam("deviceRegId") String deviceRegId,
+    @Path("/insert/{userId}/{deviceRegId}/{position}")
+    public String insert(@PathParam("facebookId") long userId, @PathParam("deviceRegId") String deviceRegId,
             @PathParam("position") int position)
     {
-//        playerWS.createPlayer(facebookId, deviceRegId, position);
+        playerWS.createPlayer(userId, deviceRegId, position);
+        return "OK";
+    }
+
+    @GET
+    @Path("/updateDevice/{userId}/{deviceRegId}")
+    public String updateDevice(@PathParam("userId") long userId, @PathParam("deviceRegId") String deviceRegId)
+    {
+        playerWS.updateDevice(userId, deviceRegId);
+        return "OK";
+    }
+
+    @GET
+    @Path("/updateRating/{userId}/{rating}")
+    public String updateRating(@PathParam("userId") long userId, @PathParam("rating") float rating)
+    {
+        playerWS.updateRating(userId, rating);
+        return "OK";
+    }
+
+    @GET
+    @Path("/getRating/{userId}")
+    public String getRating(@PathParam("userId") long userId)
+    {
+        playerWS.getRating(userId);
+        return "OK";
+    }
+
+    @GET
+    @Path("/getPosition/{userId}")
+    public String getPosition(@PathParam("userId") long userId)
+    {
+        playerWS.getPosition(userId);
         return "OK";
     }
 }
