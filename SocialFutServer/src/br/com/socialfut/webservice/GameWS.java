@@ -46,4 +46,10 @@ public class GameWS
         GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
         return gamePlayerDAO.getRates();
     }
+
+    public List<Player> getPlayersByGame(long gameId)
+    {
+        GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
+        return gamePlayerDAO.getPlayersByGame(gameId);
+    }
 }

@@ -23,14 +23,14 @@ public class GameResource
     GameWS gameWS = new GameWS();
 
     @GET
-    @Path("/addPlayerToGame/{gameId}/{userId}")
+    @Path("/addPlayerToGame/{userId}/{gameId}")
     public String addPlayerToGame(@PathParam("gameId") long gameId, @PathParam("userId") long userId)
     {
         return gameWS.addPlayerToGame(gameId, userId);
     }
 
     @GET
-    @Path("/removePlayerFromGame/{gameId}/{userId}")
+    @Path("/removePlayerFromGame/{userId}/{gameId}")
     public ResponseBuilder removePlayerFromGame(@PathParam("gameId") long gameId, @PathParam("userId") long userId)
     {
         gameWS.removePlayerFromGame(gameId, userId);
@@ -38,11 +38,11 @@ public class GameResource
     }
 
     @GET
-    @Path("/rateByGame/{facebookId}/{gameId}")
+    @Path("/rateByGame/{userId}/{gameId}")
     @Produces("application/json")
-    public float getRateByGame(@PathParam("facebookId") long facebookId, @PathParam("gameId") long gameId)
+    public float getRateByGame(@PathParam("userId") long userId, @PathParam("gameId") long gameId)
     {
-        return gameWS.getRateByGame(gameId, facebookId);
+        return gameWS.getRateByGame(gameId, userId);
     }
 
     @GET
@@ -54,11 +54,12 @@ public class GameResource
     }
 
     @GET
-    @Path("/updateRating/{facebookId}/{gameId}/{rate}")
-    public ResponseBuilder updateRating(@PathParam("facebookId") long facebookId, @PathParam("gameId") long gameId,
-            @PathParam("rate") float rate)
+    @Path("/updateRating/{userId}/{gameId}/{rating}")
+    public ResponseBuilder updateRating(@PathParam("userId") long userId, @PathParam("gameId") long gameId,
+            @PathParam("rating") float rating)
     {
-        gameWS.updateRating(facebookId, gameId, rate);
+        gameWS.updateRating(userId, gameId, rating);
+        // TODO atualizar tambem a tabela player!!
         return Response.ok();
     }
 
@@ -83,12 +84,13 @@ public class GameResource
     public String sendConfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
 
+        // incluir o jogador na tabela "Game_Player"
+        gameWS.addPlayerToGame(gameId, userId);
+
         String msg = Constants.CONFIRMATION;
 
-        // TODO incluir o jogador na tabela "Game_Player"
-
-        PlayerWS playerWS = new PlayerWS();
-        List<Player> players = playerWS.getPlayersByGame(gameId);
+        // Todos jogadores que estao na partida
+        List<Player> players = gameWS.getPlayersByGame(gameId);
 
         for (Player p : players)
         {
@@ -103,12 +105,13 @@ public class GameResource
     public String sendDesconfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
 
+        // Retirar o jogador da tabela "Game_Player"
+        gameWS.removePlayerFromGame(gameId, userId);
+
         String msg = Constants.DESCONFIRMATION;
 
-        // TODO Retirar o jogador da tabela "Game_Player"
-
-        PlayerWS playerWS = new PlayerWS();
-        List<Player> players = playerWS.getPlayersByGame(gameId);
+        // Todos jogadores que estao na partida
+        List<Player> players = gameWS.getPlayersByGame(gameId);
 
         for (Player p : players)
         {
@@ -117,5 +120,4 @@ public class GameResource
         }
         return "OK";
     }
-
 }
