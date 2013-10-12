@@ -16,10 +16,7 @@ public class ConnectionFactory
             {
                 Class.forName("com.mysql.jdbc.Driver");
 
-                StringBuilder builder = new StringBuilder();
-                builder.append("jdbc:mysql://").append("localhost").append(":3306/").append("socialfut");
-
-                conn = DriverManager.getConnection(builder.toString(), "root", null);
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialfut", "root", "socialfut");
             }
         }
         catch (Exception e)
@@ -28,5 +25,4 @@ public class ConnectionFactory
         }
         return conn;
     }
-
 }
