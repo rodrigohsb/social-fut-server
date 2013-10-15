@@ -16,7 +16,7 @@ public class ConnectionFactory
             {
                 Class.forName("com.mysql.jdbc.Driver");
 
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialfut", "root", "socialfut");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialfut", "root", null);
             }
         }
         catch (Exception e)
