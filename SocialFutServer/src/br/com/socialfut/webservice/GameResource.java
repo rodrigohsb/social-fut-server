@@ -1,14 +1,12 @@
 package br.com.socialfut.webservice;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.MediaType;
 
 import br.com.socialfut.persistence.Player;
 import br.com.socialfut.push.GCMSender;
@@ -18,65 +16,36 @@ import com.google.android.gcm.server.Message;
 import com.google.gson.Gson;
 
 @Path("/game")
+@Produces(MediaType.APPLICATION_JSON)
 public class GameResource
 {
-    GameWS gameWS = new GameWS();
-
     @GET
-    @Path("/addPlayerToGame/{userId}/{gameId}")
-    public String addPlayerToGame(@PathParam("gameId") long gameId, @PathParam("userId") long userId)
+    @Path("/ratingByGame/{userId}/{gameId}")
+    public String getRatingByGame(@PathParam("userId") long userId, @PathParam("gameId") long gameId)
     {
-        return gameWS.addPlayerToGame(gameId, userId);
-    }
-
-    @GET
-    @Path("/removePlayerFromGame/{userId}/{gameId}")
-    public ResponseBuilder removePlayerFromGame(@PathParam("gameId") long gameId, @PathParam("userId") long userId)
-    {
-        gameWS.removePlayerFromGame(gameId, userId);
-        return Response.ok();
-    }
-
-    @GET
-    @Path("/rateByGame/{userId}/{gameId}")
-    @Produces("application/json")
-    public float getRateByGame(@PathParam("userId") long userId, @PathParam("gameId") long gameId)
-    {
-        return gameWS.getRateByGame(gameId, userId);
-    }
-
-    @GET
-    @Path("/getRatesByGame/{gameId}")
-    @Produces("application/json")
-    public Map<Long, Float> getRatesByGame(@PathParam("gameId") long gameId)
-    {
-        return gameWS.getRatesByGame(gameId);
+        return new GameWS().getRateByGame(gameId, userId);
     }
 
     @GET
     @Path("/updateRating/{userId}/{gameId}/{rating}")
-    public ResponseBuilder updateRating(@PathParam("userId") long userId, @PathParam("gameId") long gameId,
+    public String updateRating(@PathParam("userId") long userId, @PathParam("gameId") long gameId,
             @PathParam("rating") float rating)
     {
-        gameWS.updateRating(userId, gameId, rating);
-        // TODO atualizar tambem a tabela player!!
-        return Response.ok();
-    }
+        GameWS gameWS = new GameWS();
 
-    @GET
-    @Path("/rates")
-    @Produces("application/json")
-    public List<Player> getRates()
-    {
-        return gameWS.getRates();
+        gameWS.updateRating(userId, gameId, rating);
+        Float userRating = gameWS.getRatingByUser(userId);
+
+        new PlayerWS().updateRating(userId, userRating);
+
+        return "OK";
     }
 
     @GET
     @Path("/rateByUser/{id}")
-    @Produces("application/json")
-    public String getRateByUser(@PathParam("id") long id)
+    public String getRatingByUser(@PathParam("id") long id)
     {
-        return new Gson().toJson(String.valueOf(gameWS.getRateByUser(id)));
+        return new Gson().toJson(String.valueOf(new GameWS().getRatingByUser(id)));
     }
 
     @GET
@@ -85,6 +54,7 @@ public class GameResource
     {
 
         // incluir o jogador na tabela "Game_Player"
+        GameWS gameWS = new GameWS();
         gameWS.addPlayerToGame(gameId, userId);
 
         String msg = Constants.CONFIRMATION;
@@ -105,6 +75,7 @@ public class GameResource
     public String sendDesconfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
 
+        GameWS gameWS = new GameWS();
         // Retirar o jogador da tabela "Game_Player"
         gameWS.removePlayerFromGame(gameId, userId);
 

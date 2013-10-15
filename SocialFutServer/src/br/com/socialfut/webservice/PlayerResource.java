@@ -1,70 +1,56 @@
 package br.com.socialfut.webservice;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-
-import br.com.socialfut.exception.NoContentException;
-import br.com.socialfut.persistence.Player;
+import javax.ws.rs.core.MediaType;
 
 @Path("/player")
+@Produces(MediaType.APPLICATION_JSON)
 public class PlayerResource
 {
-    PlayerWS playerWS = new PlayerWS();
 
-    @GET
-    @Path("/search/{userId}")
-    @Produces("application/json")
-    public Player getPlayer(@PathParam("userId") long userId)
-    {
-        Player player = playerWS.getPlayer(userId);
-
-        if (player == null)
-        {
-            throw new NoContentException("Player not found!");
-        }
-        return player;
-    }
-
-    @GET
+    @POST
     @Path("/insert/{userId}/{deviceRegId}/{position}")
     public String insert(@PathParam("facebookId") long userId, @PathParam("deviceRegId") String deviceRegId,
             @PathParam("position") int position)
     {
-        playerWS.createPlayer(userId, deviceRegId, position);
+        new PlayerWS().createPlayer(userId, deviceRegId, position);
         return "OK";
     }
 
-    @GET
+    @PUT
     @Path("/updateDevice/{userId}/{deviceRegId}")
     public String updateDevice(@PathParam("userId") long userId, @PathParam("deviceRegId") String deviceRegId)
     {
-        playerWS.updateDevice(userId, deviceRegId);
+        new PlayerWS().updateDevice(userId, deviceRegId);
         return "OK";
     }
 
     @GET
-    @Path("/updateRating/{userId}/{rating}")
-    public String updateRating(@PathParam("userId") long userId, @PathParam("rating") float rating)
+    @Path("/getRatingAndPosition/{userId}")
+    @Produces("application/json")
+    public String getRatingAndPositionById(@PathParam("userId") long userId)
     {
-        playerWS.updateRating(userId, rating);
-        return "OK";
+        return new PlayerWS().getRatingAndPosition(userId);
     }
 
     @GET
     @Path("/getRating/{userId}")
+    @Produces("application/json")
     public String getRating(@PathParam("userId") long userId)
     {
-        playerWS.getRating(userId);
-        return "OK";
+        return new PlayerWS().getRating(userId);
     }
 
     @GET
     @Path("/getPosition/{userId}")
+    @Produces("application/json")
     public String getPosition(@PathParam("userId") long userId)
     {
-        playerWS.getPosition(userId);
-        return "OK";
+        return new PlayerWS().getPosition(userId);
     }
 }
