@@ -8,11 +8,12 @@ import lombok.Data;
 @XmlRootElement
 public class Player
 {
-    private long id;
+    private Long id;
 
     private String deviceRegistrationId;
 
-    private int position;
+    private Integer position;
 
-    private float rating;
+    private Float rating;
+
 }
