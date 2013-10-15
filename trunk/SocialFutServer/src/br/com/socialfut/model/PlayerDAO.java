@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.socialfut.jdbc.ConnectionFactory;
 import br.com.socialfut.persistence.Player;
@@ -17,40 +19,54 @@ public class PlayerDAO
         this.conn = ConnectionFactory.getConnection();
     }
 
-    public Player getPlayerById(long userId)
+    // public Player getPlayerById(long userId, boolean lookForDevice)
+    // {
+    // StringBuilder query = new StringBuilder("select * from player(nolock)");
+    // query.append(" where id = " + userId);
+    //
+    // Statement stmt = null;
+    // ResultSet rs = null;
+    //
+    // Player player = new Player();
+    //
+    // try
+    // {
+    // stmt = conn.createStatement();
+    // rs = stmt.executeQuery(query.toString());
+    //
+    // while (rs.next())
+    // {
+    // float rating = rs.getFloat("rating");
+    // int position = rs.getInt("position");
+    // if (lookForDevice)
+    // {
+    // String deviceReg = rs.getString("deviceRegistrationId");
+    // player.setDeviceRegistrationId(deviceReg);
+    // }
+    //
+    // player.setId(userId);
+    // player.setRating(rating);
+    // player.setPosition(position);
+    // }
+    // }
+    // catch (SQLException e)
+    // {
+    // e.printStackTrace();
+    // }
+    //
+    // closeAll(conn, stmt, rs);
+    //
+    // return player;
+    // }
+
+    public Player getPlayerById(long userId, boolean lookForDevice)
     {
-        StringBuilder query = new StringBuilder("select * from player(nolock)");
-        query.append(" where id = " + userId);
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
         Player player = new Player();
 
-        try
-        {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            while (rs.next())
-            {
-                float rating = rs.getFloat("rating");
-                int position = rs.getInt("position");
-                String deviceReg = rs.getString("deviceRegistrationId");
-
-                player.setId(userId);
-                player.setRating(rating);
-                player.setPosition(position);
-                player.setDeviceRegistrationId(deviceReg);
-
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        closeAll(conn, stmt, rs);
+        player.setId(1l);
+        player.setPosition(1);
+//        player.setDeviceRegistrationId("Teste");
+        player.setRating(2.5f);
 
         return player;
     }
@@ -98,7 +114,7 @@ public class PlayerDAO
     public void createPlayer(long userId, String devRegId, int position)
     {
         StringBuilder query = new StringBuilder("insert into player");
-        query.append(" values(" + userId + "," + devRegId + "," + position + "," + 0);
+        query.append(" values(" + userId + ",'" + devRegId + "'," + position + "," + 0 + ")");
 
         Statement stmt = null;
 
@@ -114,16 +130,38 @@ public class PlayerDAO
         closeAll(conn, stmt, null);
     }
 
-    public float getRating(long userId)
+    public Player getRating(long userId)
     {
-        Player p = this.getPlayerById(userId);
-        return p.getRating();
+        Player p = this.getPlayerById(userId, false);
+
+        Player p1 = new Player();
+        p1.setId(p.getId());
+        p1.setRating(p.getRating());
+
+        return p1;
     }
 
-    public int getPosition(long userId)
+    public Player getPosition(long userId)
     {
-        Player p = this.getPlayerById(userId);
-        return p.getPosition();
+        Player p = this.getPlayerById(userId, false);
+
+        Player p1 = new Player();
+        p1.setId(p.getId());
+        p.setPosition(p.getPosition());
+
+        return p1;
+    }
+
+    public Player getRatingAndPosition(long userId)
+    {
+        Player p = this.getPlayerById(userId, false);
+
+        Player p1 = new Player();
+        p1.setId(p.getId());
+        p1.setPosition(p.getPosition());
+        p1.setRating(p.getRating());
+
+        return p1;
     }
 
     private static void closeAll(Connection conn, Statement ps, ResultSet rs)

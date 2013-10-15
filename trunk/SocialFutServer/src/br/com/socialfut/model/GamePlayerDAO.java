@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +28,9 @@ public class GamePlayerDAO
      * @param userId
      * @return
      */
-    public float getRateByUser(long userId)
+    public float getRatingByUser(long userId)
     {
-        
+
         StringBuilder query = new StringBuilder("select value,qnt_rates from game_player(nolock)");
         query.append(" where player_id = " + userId);
 
@@ -63,39 +62,6 @@ public class GamePlayerDAO
         closeAll(conn, stmt, rs);
 
         return (totalValue == 0 || totalQntRates == 0) ? 0 : (totalValue / totalQntRates);
-    }
-
-    // TODO Fazer!!
-    public List<Player> getRates()
-    {
-        /** Levantamento da quantidade a ser processada. */
-        StringBuilder query = new StringBuilder("select * from game_player(nolock) gp");
-        query.append(" inner join player(nolock) p");
-        query.append(" on p.id = gp.player_id");
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        List<Player> rates = new ArrayList<Player>();
-
-        try
-        {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            while (rs.next())
-            {
-
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        closeAll(conn, stmt, rs);
-
-        return rates;
     }
 
     /**
@@ -137,50 +103,6 @@ public class GamePlayerDAO
         }
         closeAll(conn, stmt, rs);
         return 0;
-    }
-
-    /**
-     * 
-     * FEITO!
-     * 
-     * @param id
-     * @return
-     */
-    public Map<Long, Float> getRatesByGame(long gameId)
-    {
-        StringBuilder query = new StringBuilder("select player_id,value,qnt_rates from game_player(nolock)");
-        query.append(" where game_id = " + gameId);
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        Map<Long, Float> rates = new HashMap<Long, Float>();
-
-        try
-        {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            while (rs.next())
-            {
-                long player_id = rs.getLong("player_id");
-                float totalValue = rs.getFloat("value");
-                int qntRates = rs.getInt("qnt_rates");
-
-                if (totalValue != 0 && qntRates != 0)
-                {
-                    float value = (totalValue / qntRates);
-                    rates.put(player_id, value);
-                }
-            }
-            return rates;
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        closeAll(conn, stmt, rs);
-        return null;
     }
 
     /**
@@ -269,31 +191,17 @@ public class GamePlayerDAO
      * @param userId
      * @return
      */
-    public String addPlayerToGame(long gameId, long userId)
+    public void addPlayerToGame(long gameId, long userId) throws Exception
     {
 
         StringBuilder query = new StringBuilder("insert into game_player");
         query.append(" values(" + userId + "," + gameId + "," + 0 + "," + 0 + ")");
 
         Statement stmt = null;
-        boolean inseriu = false;
 
-        try
-        {
-            stmt = conn.createStatement();
-            inseriu = stmt.execute(query.toString());
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        stmt = conn.createStatement();
+        stmt.execute(query.toString());
         closeAll(conn, stmt, null);
-
-        if (inseriu)
-        {
-            return "Escalado com sucesso!";
-        }
-        return "Problemas ao escalar jogador!";
     }
 
     /**
@@ -303,8 +211,9 @@ public class GamePlayerDAO
      * @param gameId
      * @param userId
      * @return
+     * @throws Exception
      */
-    public String removePlayerFromGame(long gameId, long userId)
+    public void removePlayerFromGame(long gameId, long userId) throws Exception
     {
         /** Levantamento da quantidade a ser processada. */
         StringBuilder query = new StringBuilder("delete from game_player");
@@ -312,26 +221,12 @@ public class GamePlayerDAO
         query.append(" and player_id =" + userId);
 
         Statement stmt = null;
-        boolean deleted = false;
 
-        try
-        {
-            stmt = conn.createStatement();
-            deleted = stmt.execute(query.toString());
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        stmt = conn.createStatement();
+        stmt.execute(query.toString());
         closeAll(conn, stmt, null);
-
-        if (deleted)
-        {
-            return "Removido com sucesso!";
-        }
-        return "Problemas ao remover jogador!";
     }
-    
+
     public List<Player> getPlayersByGame(long gameId)
     {
         return null;
