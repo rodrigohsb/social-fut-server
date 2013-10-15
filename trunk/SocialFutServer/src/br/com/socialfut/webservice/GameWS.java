@@ -11,24 +11,36 @@ public class GameWS
     public String addPlayerToGame(long gameId, long userId)
     {
         GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
-        return gamePlayerDAO.addPlayerToGame(gameId, userId);
+        try
+        {
+            gamePlayerDAO.addPlayerToGame(gameId, userId);
+        }
+        catch (Exception e)
+        {
+            return "NOK";
+        }
+        return "OK";
     }
 
-    public void removePlayerFromGame(long gameId, long userId)
+    public String removePlayerFromGame(long gameId, long userId)
     {
         GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
-        gamePlayerDAO.removePlayerFromGame(gameId, userId);
+        try
+        {
+            gamePlayerDAO.removePlayerFromGame(gameId, userId);
+        }
+        catch (Exception e)
+        {
+            return "NOK";
+        }
+        return "OK";
     }
 
-    public float getRateByGame(long gameId, long userId)
+    public String getRateByGame(long gameId, long userId)
     {
         GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
-        return gamePlayerDAO.getRateByGame(gameId, userId);
-    }
-
-    public Map<Long, Float> getRatesByGame(long gameId)
-    {
-        return new GamePlayerDAO().getRatesByGame(gameId);
+        float rating = gamePlayerDAO.getRateByGame(gameId, userId);
+        return String.valueOf(rating);
     }
 
     public void updateRating(long userId, long gameId, float rate)
@@ -36,15 +48,9 @@ public class GameWS
         new GamePlayerDAO().updateRating(userId, gameId, rate);
     }
 
-    public float getRateByUser(long userId)
+    public float getRatingByUser(long userId)
     {
-        return new GamePlayerDAO().getRateByUser(userId);
-    }
-
-    public List<Player> getRates()
-    {
-        GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
-        return gamePlayerDAO.getRates();
+        return new GamePlayerDAO().getRatingByUser(userId);
     }
 
     public List<Player> getPlayersByGame(long gameId)
