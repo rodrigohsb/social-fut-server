@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import br.com.socialfut.jdbc.ConnectionFactory;
 import br.com.socialfut.persistence.GamePlayer;
@@ -73,36 +71,38 @@ public class GamePlayerDAO
      */
     public float getRateByGame(long gameId, long userId)
     {
-        /** Levantamento da quantidade a ser processada. */
-        StringBuilder query = new StringBuilder("select * from game_player(nolock)");
-        query.append(" where player_id = " + userId);
-        query.append(" and game_id = " + gameId);
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try
-        {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            if (rs != null)
-            {
-                float value = rs.getFloat("value");
-                int qntRates = rs.getInt("qnt_rates");
-
-                if (value != 0 && qntRates != 0)
-                {
-                    return (value / qntRates);
-                }
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        closeAll(conn, stmt, rs);
-        return 0;
+//        /** Levantamento da quantidade a ser processada. */
+//        StringBuilder query = new StringBuilder("select * from game_player(nolock)");
+//        query.append(" where player_id = " + userId);
+//        query.append(" and game_id = " + gameId);
+//
+//        Statement stmt = null;
+//        ResultSet rs = null;
+//
+//        try
+//        {
+//            stmt = conn.createStatement();
+//            rs = stmt.executeQuery(query.toString());
+//
+//            if (rs != null)
+//            {
+//                float value = rs.getFloat("value");
+//                int qntRates = rs.getInt("qnt_rates");
+//
+//                if (value != 0 && qntRates != 0)
+//                {
+//                    return (value / qntRates);
+//                }
+//            }
+//        }
+//        catch (SQLException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        closeAll(conn, stmt, rs);
+//        return 0;
+        
+        return 2.5f;
     }
 
     /**
