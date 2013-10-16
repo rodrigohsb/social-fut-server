@@ -1,8 +1,6 @@
 package br.com.socialfut.webservice;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -13,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 public class PlayerResource
 {
 
-    @POST
+    @GET
     @Path("/insert/{userId}/{deviceRegId}/{position}")
     public String insert(@PathParam("facebookId") long userId, @PathParam("deviceRegId") String deviceRegId,
             @PathParam("position") int position)
@@ -22,7 +20,7 @@ public class PlayerResource
         return "OK";
     }
 
-    @PUT
+    @GET
     @Path("/updateDevice/{userId}/{deviceRegId}")
     public String updateDevice(@PathParam("userId") long userId, @PathParam("deviceRegId") String deviceRegId)
     {

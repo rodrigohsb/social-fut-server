@@ -1,7 +1,8 @@
 package br.com.socialfut.webservice;
 
 import java.util.List;
-import java.util.Map;
+
+import com.google.gson.Gson;
 
 import br.com.socialfut.model.GamePlayerDAO;
 import br.com.socialfut.persistence.Player;
@@ -40,7 +41,11 @@ public class GameWS
     {
         GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
         float rating = gamePlayerDAO.getRateByGame(gameId, userId);
-        return String.valueOf(rating);
+        Player p = new Player();
+        p.setId(userId);
+        p.setRating(rating);
+        Gson json = new Gson();
+        return json.toJson(p);
     }
 
     public void updateRating(long userId, long gameId, float rate)
