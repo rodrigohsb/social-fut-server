@@ -58,7 +58,14 @@ public class GameWS
         return new GamePlayerDAO().getRatingByUser(userId);
     }
 
-    public List<Player> getPlayersByGame(long gameId)
+    public String getPlayersByGame(long gameId)
+    {
+        List<Player> players = this.getListPlayersByGame(gameId);
+        Gson json = new Gson();
+        return json.toJson(players);
+    }
+
+    public List<Player> getListPlayersByGame(long gameId)
     {
         GamePlayerDAO gamePlayerDAO = new GamePlayerDAO();
         return gamePlayerDAO.getPlayersByGame(gameId);

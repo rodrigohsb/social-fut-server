@@ -18,6 +18,7 @@ import com.google.android.gcm.server.Message;
 @Produces(MediaType.APPLICATION_JSON)
 public class GameResource
 {
+
     @GET
     @Path("/ratingByGame/{userId}/{gameId}")
     public String getRatingByGame(@PathParam("userId") long userId, @PathParam("gameId") long gameId)
@@ -42,6 +43,14 @@ public class GameResource
     }
 
     @GET
+    @Path("/playersByGame/{gameId}")
+    public String getPlayersByGame(@PathParam("gameId") int gameId)
+    {
+        GameWS gameWS = new GameWS();
+        return gameWS.getPlayersByGame(gameId);
+    }
+
+    @GET
     @Path("/confirmation/{from}/{gameId}")
     public String sendConfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
@@ -49,7 +58,7 @@ public class GameResource
         gameWS.addPlayerToGame(gameId, userId);
 
         // Todos jogadores que estao na partida
-        List<Player> players = gameWS.getPlayersByGame(gameId);
+        List<Player> players = gameWS.getListPlayersByGame(gameId);
 
         for (Player p : players)
         {
@@ -69,7 +78,7 @@ public class GameResource
         gameWS.removePlayerFromGame(gameId, userId);
 
         // Todos jogadores que estao na partida
-        List<Player> players = gameWS.getPlayersByGame(gameId);
+        List<Player> players = gameWS.getListPlayersByGame(gameId);
 
         for (Player p : players)
         {
