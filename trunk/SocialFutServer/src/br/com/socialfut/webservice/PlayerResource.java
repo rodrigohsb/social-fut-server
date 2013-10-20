@@ -13,11 +13,11 @@ public class PlayerResource
 
     @GET
     @Path("/insert/{userId}/{deviceRegId}/{position}")
-    public String insert(@PathParam("facebookId") long userId, @PathParam("deviceRegId") String deviceRegId,
+    public String insert(@PathParam("userId") long userId, @PathParam("deviceRegId") String deviceRegId,
             @PathParam("position") int position)
     {
         new PlayerWS().createPlayer(userId, deviceRegId, position);
-        return "OK";
+        return "OK"; 
     }
 
     @GET
