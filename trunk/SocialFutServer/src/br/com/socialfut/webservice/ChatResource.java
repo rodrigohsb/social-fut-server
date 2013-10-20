@@ -34,7 +34,8 @@ public class ChatResource
         }
 
         Message message = new Message.Builder().addData("msg", from + Constants.SEMICOLON + msg).build();
-        GCMSender.sendMessage(player.getDeviceRegistrationId(), message);
+//        GCMSender.sendMessage(player.getDeviceRegistrationId(), message);
+        GCMSender.sendMessage("APA91bFmbzE_yj8PDuctVmUqZA-wHUbQSAstLZk5pVkqnimC29HeNx36MgoFU6uO292ZV6nOuhC03aSNFLMeQEqyt4AbqqAVKlRCHVAzxtOC-12wljjjA5aH2LdfTKN5j7cEsVy2DqfZ", message);
         return "OK";
     }
 }
