@@ -15,5 +15,7 @@ public class Constants
 
     public static final String DESCONFIRMATION = "desconfirmation";
 
+    public static final String INVITATION = "invitation";
+
     public static List<Player> players = new ArrayList<Player>();
 }
