@@ -2,20 +2,19 @@ package br.com.socialfut.teste;
 
 import java.io.IOException;
 
-import br.com.socialfut.push.GCMSender;
-import br.com.socialfut.utils.Constants;
-
-import com.google.android.gcm.server.Message;
+import br.com.socialfut.webservice.ChatResource;
 
 public class TestSendToDevice
 {
     public static void main(String[] args) throws IOException
     {
-        long facebookId = 518163454l;
+        long from = 100002895406629l;
 
-        String msg = "Mais um teste!";
+        long to = 583633830;
 
-        Message message = new Message.Builder().addData("msg", facebookId + Constants.SEMICOLON + msg).build();
-        GCMSender.sendMessage(Constants.DEVICE_REGISTRATION_ID, message);
+        String msg = "asoifmsd  !!!!";
+
+        ChatResource cr = new ChatResource();
+        cr.sendMessage(from, to, msg);
     }
 }
