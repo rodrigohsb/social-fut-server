@@ -1,5 +1,6 @@
 package br.com.socialfut.webservice;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -20,6 +21,32 @@ public class GameResource
 {
 
     @GET
+    @Path("/createGame/{title}/{address}/{startDate}/{finishDate}")
+    public String createGame(@PathParam("title") String title, @PathParam("address") String address,
+            @PathParam("startDate") long startDate, @PathParam("finishDate") long finishDate)
+    {
+
+        Date start = new Date(startDate);
+        Date finish = new Date(finishDate);
+        new GameWS().createGame(title, address, start, finish);
+        return "OK";
+    }
+
+    @GET
+    @Path("/oldGames/{userId}")
+    public String getOldGames(@PathParam("userId") long id)
+    {
+        return new GameWS().getOldGames(id);
+    }
+
+    @GET
+    @Path("/newGames/{userId}")
+    public String getNewGames(@PathParam("userId") long id)
+    {
+        return new GameWS().getNewGames(id);
+    }
+
+    @GET
     @Path("/ratingByGame/{userId}/{gameId}")
     public String getRatingByGame(@PathParam("userId") long userId, @PathParam("gameId") long gameId)
     {
@@ -31,11 +58,9 @@ public class GameResource
     public String updateRating(@PathParam("userId") long userId, @PathParam("gameId") long gameId,
             @PathParam("rating") float rating)
     {
-        /** Atualiza no jogo */
         GameWS gameWS = new GameWS();
         gameWS.updateRating(userId, gameId, rating);
 
-        /** Atualiza no player */
         Float userRating = gameWS.getRatingByUser(userId);
         new PlayerWS().updateRating(userId, userRating);
 
@@ -86,6 +111,20 @@ public class GameResource
                     userId + Constants.SEMICOLON + Constants.DESCONFIRMATION + Constants.SEMICOLON + gameId).build();
             GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
         }
+        return "OK";
+    }
+
+    @GET
+    @Path("/invite/{gameId}/from/to")
+    public String invite(@PathParam("gameId") int gameId, @PathParam("from") long from, @PathParam("to") long to)
+    {
+        PlayerWS playerWS = new PlayerWS();
+        Player guest = playerWS.getPlayer(from);
+
+        Message message = new Message.Builder().addData("msg",
+                from + Constants.SEMICOLON + Constants.INVITATION + Constants.SEMICOLON + gameId).build();
+        GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
+
         return "OK";
     }
 }
