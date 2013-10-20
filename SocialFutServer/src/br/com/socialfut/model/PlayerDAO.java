@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import br.com.socialfut.jdbc.ConnectionFactory;
 import br.com.socialfut.persistence.Player;
+import br.com.socialfut.utils.Constants;
 
 public class PlayerDAO
 {
@@ -14,7 +15,7 @@ public class PlayerDAO
 
     public PlayerDAO()
     {
-        this.conn = ConnectionFactory.getConnection();
+//        this.conn = ConnectionFactory.getConnection();
     }
 
     // public Player getPlayerById(long userId, boolean lookForDevice)
@@ -62,70 +63,78 @@ public class PlayerDAO
         Player player = new Player();
 
         player.setId(1l);
-        player.setPosition(1);
+        player.setPosition(3);
         player.setDeviceRegistrationId("Teste");
-        player.setRating(2.5f);
+        player.setRating(3.5f);
 
         return player;
     }
 
     public void updateDevice(long userId, String devRegId)
     {
-//        StringBuilder query = new StringBuilder("update player");
-//        query.append(" set deviceRegistrationId = " + devRegId);
-//        query.append(" where id = " + userId);
-//
-//        Statement stmt = null;
-//
-//        try
-//        {
-//            stmt = conn.createStatement();
-//            stmt.executeUpdate(query.toString());
-//        }
-//        catch (SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        closeAll(conn, stmt, null);
+        // StringBuilder query = new StringBuilder("update player");
+        // query.append(" set deviceRegistrationId = " + devRegId);
+        // query.append(" where id = " + userId);
+        //
+        // Statement stmt = null;
+        //
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // stmt.executeUpdate(query.toString());
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, null);
     }
 
     public void updateRating(long userId, float rating)
     {
-//        StringBuilder query = new StringBuilder("update player");
-//        query.append(" set rating = " + rating);
-//        query.append(" where id = " + userId);
-//
-//        Statement stmt = null;
-//
-//        try
-//        {
-//            stmt = conn.createStatement();
-//            stmt.executeUpdate(query.toString());
-//        }
-//        catch (SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        closeAll(conn, stmt, null);
+        // StringBuilder query = new StringBuilder("update player");
+        // query.append(" set rating = " + rating);
+        // query.append(" where id = " + userId);
+        //
+        // Statement stmt = null;
+        //
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // stmt.executeUpdate(query.toString());
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, null);
     }
 
     public void createPlayer(long userId, String devRegId, int position)
     {
-//        StringBuilder query = new StringBuilder("insert into player");
-//        query.append(" values(" + userId + ",'" + devRegId + "'," + position + "," + 0 + ")");
-//
-//        Statement stmt = null;
-//
-//        try
-//        {
-//            stmt = conn.createStatement();
-//            stmt.executeUpdate(query.toString());
-//        }
-//        catch (SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        closeAll(conn, stmt, null);
+        Player p = new Player();
+        p.setId(userId);
+        p.setDeviceRegistrationId(devRegId);
+        p.setPosition(position);
+
+        Constants.players.add(p);
+
+        // StringBuilder query = new StringBuilder("insert into player");
+        // query.append(" values(" + userId + ",'" + devRegId + "'," + position
+        // + "," + 0 + ")");
+        //
+        // Statement stmt = null;
+        //
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // stmt.executeUpdate(query.toString());
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, null);
     }
 
     public Player getRating(long userId)
