@@ -10,7 +10,7 @@ public class GamePlayer
 {
     private long id;
 
-    private long gameId;
+    private long game_id;
 
     private int player_id;
 
