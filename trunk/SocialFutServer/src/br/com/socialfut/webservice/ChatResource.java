@@ -22,8 +22,16 @@ public class ChatResource
     public String sendMessage(@PathParam("from") long from, @PathParam("to") long to, String msg)
     {
 
-        PlayerWS playerWS = new PlayerWS();
-        Player player = playerWS.getPlayer(to);
+        // PlayerWS playerWS = new PlayerWS();
+        // Player player = playerWS.getPlayer(to);
+        Player player = new Player();
+        for (Player p : Constants.players)
+        {
+            if (p.getId() == to)
+            {
+                player.setDeviceRegistrationId(p.getDeviceRegistrationId());
+            }
+        }
 
         Message message = new Message.Builder().addData("msg", from + Constants.SEMICOLON + msg).build();
         GCMSender.sendMessage(player.getDeviceRegistrationId(), message);
