@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.socialfut.jdbc.ConnectionFactory;
+import br.com.socialfut.persistence.Game;
 import br.com.socialfut.persistence.GamePlayer;
 import br.com.socialfut.persistence.Player;
 
@@ -62,6 +65,82 @@ public class GamePlayerDAO
         return (totalValue == 0 || totalQntRates == 0) ? 0 : (totalValue / totalQntRates);
     }
 
+    public List<Game> getNewGames(long userId)
+    {
+
+        List<Game> newGames = new ArrayList<Game>();
+        StringBuilder query = new StringBuilder("select g.* from game_player(nolock) gp");
+        query.append(" inner join game(nolock)g on g.id = gp.game_id");
+        query.append(" where player_id = " + userId);
+        query.append(" where d.STARTED_DATE > " + new Date());
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query.toString());
+
+            if (rs != null)
+            {
+                long id = rs.getLong("ID");
+                String address = rs.getString("ADDRESS");
+                String title = rs.getString("TITLE");
+                Date createdDate = rs.getDate("CREATED_DATE");
+                Date startedDate = rs.getDate("STARTED_DATE");
+                Date finishDate = rs.getDate("FINISH_DATE");
+
+                Game g = new Game(id, title, address, createdDate, startedDate, finishDate);
+                newGames.add(g);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        closeAll(conn, stmt, rs);
+        return newGames;
+    }
+
+    public List<Game> getOldGames(long userId)
+    {
+
+        List<Game> newGames = new ArrayList<Game>();
+        StringBuilder query = new StringBuilder("select g.* from game_player(nolock) gp");
+        query.append(" inner join game(nolock)g on g.id = gp.game_id");
+        query.append(" where player_id = " + userId);
+        query.append(" where d.STARTED_DATE < " + new Date());
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query.toString());
+
+            if (rs != null)
+            {
+                long id = rs.getLong("ID");
+                String address = rs.getString("ADDRESS");
+                String title = rs.getString("TITLE");
+                Date createdDate = rs.getDate("CREATED_DATE");
+                Date startedDate = rs.getDate("STARTED_DATE");
+                Date finishDate = rs.getDate("FINISH_DATE");
+
+                Game g = new Game(id, title, address, createdDate, startedDate, finishDate);
+                newGames.add(g);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        closeAll(conn, stmt, rs);
+        return newGames;
+    }
+
     /**
      * 
      * FEITO!
@@ -71,37 +150,38 @@ public class GamePlayerDAO
      */
     public float getRateByGame(long gameId, long userId)
     {
-//        /** Levantamento da quantidade a ser processada. */
-//        StringBuilder query = new StringBuilder("select * from game_player(nolock)");
-//        query.append(" where player_id = " + userId);
-//        query.append(" and game_id = " + gameId);
-//
-//        Statement stmt = null;
-//        ResultSet rs = null;
-//
-//        try
-//        {
-//            stmt = conn.createStatement();
-//            rs = stmt.executeQuery(query.toString());
-//
-//            if (rs != null)
-//            {
-//                float value = rs.getFloat("value");
-//                int qntRates = rs.getInt("qnt_rates");
-//
-//                if (value != 0 && qntRates != 0)
-//                {
-//                    return (value / qntRates);
-//                }
-//            }
-//        }
-//        catch (SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        closeAll(conn, stmt, rs);
-//        return 0;
-        
+        // /** Levantamento da quantidade a ser processada. */
+        // StringBuilder query = new
+        // StringBuilder("select * from game_player(nolock)");
+        // query.append(" where player_id = " + userId);
+        // query.append(" and game_id = " + gameId);
+        //
+        // Statement stmt = null;
+        // ResultSet rs = null;
+        //
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // rs = stmt.executeQuery(query.toString());
+        //
+        // if (rs != null)
+        // {
+        // float value = rs.getFloat("value");
+        // int qntRates = rs.getInt("qnt_rates");
+        //
+        // if (value != 0 && qntRates != 0)
+        // {
+        // return (value / qntRates);
+        // }
+        // }
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, rs);
+        // return 0;
+
         return 2.5f;
     }
 
@@ -167,7 +247,7 @@ public class GamePlayerDAO
                 float value = rs.getFloat("value");
                 int qntRates = rs.getInt("qnt_rates");
 
-                gp.setGameId(gameId);
+                gp.setGame_id(gameId);
                 gp.setValue(value);
                 gp.setQntRates(qntRates);
 
