@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.Date;
 
 import br.com.socialfut.jdbc.ConnectionFactory;
+import br.com.socialfut.persistence.Game;
 
 public class GameDAO
 {
@@ -37,6 +38,43 @@ public class GameDAO
         stmt.execute(query.toString());
         closeAll(conn, stmt, null);
 
+    }
+
+    public Game getGameById(long gameId)
+    {
+        
+        Game g = new Game(1, "Qualquer Titulo", "Rua Qualquer", new Date(), new Date(), new Date());
+        return g;
+        
+//        StringBuilder query = new StringBuilder("select * from game");
+//        query.append(" where id = " + gameId);
+//
+//        Statement stmt = null;
+//        ResultSet rs = null;
+//        try
+//        {
+//            stmt = conn.createStatement();
+//            rs = stmt.executeQuery(query.toString());
+//            if (rs != null)
+//            {
+//                long id = rs.getLong("ID");
+//                String title = rs.getString("title");
+//                String address = rs.getString("address");
+//                Date createdDate = rs.getDate("createdDate");
+//                Date startDate = rs.getDate("startDate");
+//                Date finishDate = rs.getDate("finishDate");
+//
+//                Game g = new Game(id, title, address, createdDate, startDate, finishDate);
+//                return g;
+//            }
+//        }
+//        catch (SQLException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        closeAll(conn, stmt, null);
+//
+//        return null;
     }
 
     private static void closeAll(Connection conn, Statement ps, ResultSet rs)
