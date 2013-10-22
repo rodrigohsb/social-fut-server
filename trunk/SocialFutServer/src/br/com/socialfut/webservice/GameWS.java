@@ -51,9 +51,9 @@ public class GameWS
         return "OK";
     }
 
-    public String getOldGames(long id)
+    public String getOldGames(long userId)
     {
-        List<Game> oldGames = new GamePlayerDAO().getOldGames(id);
+        List<Game> oldGames = new GamePlayerDAO().getOldGames(userId);
         Gson json = new Gson();
         return json.toJson(oldGames);
     }
@@ -65,14 +65,20 @@ public class GameWS
         return json.toJson(newGames);
     }
 
+    public String getGameById(long id)
+    {
+        Game game = new GameDAO().getGameById(id);
+        Gson json = new Gson();
+        return json.toJson(game);
+    }
+
     public String getRateByGame(long gameId, long userId)
     {
         float rating = new GamePlayerDAO().getRateByGame(gameId, userId);
         Player p = new Player();
-        p.setId(userId);
         p.setRating(rating);
         Gson json = new Gson();
-        return json.toJson(p);
+        return json.toJson(rating);
     }
 
     public void updateRating(long userId, long gameId, float rate)

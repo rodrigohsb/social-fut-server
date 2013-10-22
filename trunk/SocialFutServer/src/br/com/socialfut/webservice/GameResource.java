@@ -1,7 +1,6 @@
 package br.com.socialfut.webservice;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,7 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import br.com.socialfut.persistence.Player;
 import br.com.socialfut.push.GCMSender;
 import br.com.socialfut.utils.Constants;
 
@@ -34,9 +32,9 @@ public class GameResource
 
     @GET
     @Path("/oldGames/{userId}")
-    public String getOldGames(@PathParam("userId") long id)
+    public String getOldGames(@PathParam("userId") long userId)
     {
-        return new GameWS().getOldGames(id);
+        return new GameWS().getOldGames(userId);
     }
 
     @GET
@@ -46,6 +44,13 @@ public class GameResource
         return new GameWS().getNewGames(id);
     }
 
+    @GET
+    @Path("/gameById/{id}")
+    public String gameById(@PathParam("id") long gameId)
+    {
+        return new GameWS().getGameById(gameId);
+    }
+    
     @GET
     @Path("/ratingByGame/{userId}/{gameId}")
     public String getRatingByGame(@PathParam("userId") long userId, @PathParam("gameId") long gameId)
@@ -71,26 +76,25 @@ public class GameResource
     @Path("/playersByGame/{gameId}")
     public String getPlayersByGame(@PathParam("gameId") int gameId)
     {
-        GameWS gameWS = new GameWS();
-        return gameWS.getPlayersByGame(gameId);
+        return new GameWS().getPlayersByGame(gameId);
     }
 
     @GET
     @Path("/confirmation/{from}/{gameId}")
     public String sendConfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
-        GameWS gameWS = new GameWS();
-        gameWS.addPlayerToGame(gameId, userId);
-
-        // Todos jogadores que estao na partida
-        List<Player> players = gameWS.getListPlayersByGame(gameId);
-
-        for (Player p : players)
-        {
-            Message message = new Message.Builder().addData("msg",
-                    userId + Constants.SEMICOLON + Constants.CONFIRMATION + Constants.SEMICOLON + gameId).build();
-            GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
-        }
+//        GameWS gameWS = new GameWS();
+//        gameWS.addPlayerToGame(gameId, userId);
+//
+//        // Todos jogadores que estao na partida
+//        List<Player> players = gameWS.getListPlayersByGame(gameId);
+//
+//        for (Player p : players)
+//        {
+            Message message = new Message.Builder().addData("msg", userId + Constants.SEMICOLON + Constants.CONFIRMATION + Constants.SEMICOLON + gameId).build();
+//            GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
+//        }
+        GCMSender.sendMessage("APA91bFmbzE_yj8PDuctVmUqZA-wHUbQSAstLZk5pVkqnimC29HeNx36MgoFU6uO292ZV6nOuhC03aSNFLMeQEqyt4AbqqAVKlRCHVAzxtOC-12wljjjA5aH2LdfTKN5j7cEsVy2DqfZ", message);
         return "OK";
     }
 
@@ -99,18 +103,18 @@ public class GameResource
     public String sendDesconfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
 
-        GameWS gameWS = new GameWS();
-        gameWS.removePlayerFromGame(gameId, userId);
-
-        // Todos jogadores que estao na partida
-        List<Player> players = gameWS.getListPlayersByGame(gameId);
-
-        for (Player p : players)
-        {
-            Message message = new Message.Builder().addData("msg",
-                    userId + Constants.SEMICOLON + Constants.DESCONFIRMATION + Constants.SEMICOLON + gameId).build();
-            GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
-        }
+//        GameWS gameWS = new GameWS();
+//        gameWS.removePlayerFromGame(gameId, userId);
+//
+//        // Todos jogadores que estao na partida
+//        List<Player> players = gameWS.getListPlayersByGame(gameId);
+//
+//        for (Player p : players)
+//        {
+            Message message = new Message.Builder().addData("msg", userId + Constants.SEMICOLON + Constants.DESCONFIRMATION + Constants.SEMICOLON + gameId).build();
+//            GCMSender.sendMessage(p.getDeviceRegistrationId(), message);
+//        }
+        GCMSender.sendMessage("APA91bFmbzE_yj8PDuctVmUqZA-wHUbQSAstLZk5pVkqnimC29HeNx36MgoFU6uO292ZV6nOuhC03aSNFLMeQEqyt4AbqqAVKlRCHVAzxtOC-12wljjjA5aH2LdfTKN5j7cEsVy2DqfZ", message);
         return "OK";
     }
 
@@ -118,12 +122,13 @@ public class GameResource
     @Path("/invite/{gameId}/from/to")
     public String invite(@PathParam("gameId") int gameId, @PathParam("from") long from, @PathParam("to") long to)
     {
-        PlayerWS playerWS = new PlayerWS();
-        Player guest = playerWS.getPlayer(from);
+//        PlayerWS playerWS = new PlayerWS();
+//        Player guest = playerWS.getPlayer(from);
 
         Message message = new Message.Builder().addData("msg",
                 from + Constants.SEMICOLON + Constants.INVITATION + Constants.SEMICOLON + gameId).build();
-        GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
+//        GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
+        GCMSender.sendMessage("APA91bFmbzE_yj8PDuctVmUqZA-wHUbQSAstLZk5pVkqnimC29HeNx36MgoFU6uO292ZV6nOuhC03aSNFLMeQEqyt4AbqqAVKlRCHVAzxtOC-12wljjjA5aH2LdfTKN5j7cEsVy2DqfZ", message);
 
         return "OK";
     }
