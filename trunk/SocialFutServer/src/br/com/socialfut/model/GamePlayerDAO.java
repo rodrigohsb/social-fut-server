@@ -69,37 +69,44 @@ public class GamePlayerDAO
     {
 
         List<Game> newGames = new ArrayList<Game>();
-        StringBuilder query = new StringBuilder("select g.* from game_player(nolock) gp");
-        query.append(" inner join game(nolock)g on g.id = gp.game_id");
-        query.append(" where player_id = " + userId);
-        query.append(" where d.STARTED_DATE > " + new Date());
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try
+        for (int i = 0; i < 16; i++)
         {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            if (rs != null)
-            {
-                long id = rs.getLong("ID");
-                String address = rs.getString("ADDRESS");
-                String title = rs.getString("TITLE");
-                Date createdDate = rs.getDate("CREATED_DATE");
-                Date startedDate = rs.getDate("STARTED_DATE");
-                Date finishDate = rs.getDate("FINISH_DATE");
-
-                Game g = new Game(id, title, address, createdDate, startedDate, finishDate);
-                newGames.add(g);
-            }
+            Game g = new Game(1, "Titulo" + i, "Rua XPTO" + i, new Date(), new Date(), new Date());
+            newGames.add(g);
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        closeAll(conn, stmt, rs);
+        // StringBuilder query = new
+        // StringBuilder("select g.* from game_player(nolock) gp");
+        // query.append(" inner join game(nolock)g on g.id = gp.game_id");
+        // query.append(" where player_id = " + userId);
+        // query.append(" where d.STARTED_DATE > " + new Date());
+        //
+        // Statement stmt = null;
+        // ResultSet rs = null;
+        //
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // rs = stmt.executeQuery(query.toString());
+        //
+        // if (rs != null)
+        // {
+        // long id = rs.getLong("ID");
+        // String address = rs.getString("ADDRESS");
+        // String title = rs.getString("TITLE");
+        // Date createdDate = rs.getDate("CREATED_DATE");
+        // Date startedDate = rs.getDate("STARTED_DATE");
+        // Date finishDate = rs.getDate("FINISH_DATE");
+        //
+        // Game g = new Game(id, title, address, createdDate, startedDate,
+        // finishDate);
+        // newGames.add(g);
+        // }
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, rs);
         return newGames;
     }
 
@@ -107,37 +114,46 @@ public class GamePlayerDAO
     {
 
         List<Game> newGames = new ArrayList<Game>();
-        StringBuilder query = new StringBuilder("select g.* from game_player(nolock) gp");
-        query.append(" inner join game(nolock)g on g.id = gp.game_id");
-        query.append(" where player_id = " + userId);
-        query.append(" where d.STARTED_DATE < " + new Date());
 
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try
+        for (int i = 0; i < 16; i++)
         {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(query.toString());
-
-            if (rs != null)
-            {
-                long id = rs.getLong("ID");
-                String address = rs.getString("ADDRESS");
-                String title = rs.getString("TITLE");
-                Date createdDate = rs.getDate("CREATED_DATE");
-                Date startedDate = rs.getDate("STARTED_DATE");
-                Date finishDate = rs.getDate("FINISH_DATE");
-
-                Game g = new Game(id, title, address, createdDate, startedDate, finishDate);
-                newGames.add(g);
-            }
+            Game g = new Game(1, "Titulo" + i, "Rua XPTO" + i, new Date(), new Date(), new Date());
+            newGames.add(g);
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        closeAll(conn, stmt, rs);
+
+        // StringBuilder query = new
+        // StringBuilder("select g.* from game_player(nolock) gp");
+        // query.append(" inner join game(nolock)g on g.id = gp.game_id");
+        // query.append(" where player_id = " + userId);
+        // query.append(" where d.STARTED_DATE < " + new Date());
+        //
+        // Statement stmt = null;
+        // ResultSet rs = null;
+        //
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // rs = stmt.executeQuery(query.toString());
+        //
+        // if (rs != null)
+        // {
+        // long id = rs.getLong("ID");
+        // String address = rs.getString("ADDRESS");
+        // String title = rs.getString("TITLE");
+        // Date createdDate = rs.getDate("CREATED_DATE");
+        // Date startedDate = rs.getDate("STARTED_DATE");
+        // Date finishDate = rs.getDate("FINISH_DATE");
+        //
+        // Game g = new Game(id, title, address, createdDate, startedDate,
+        // finishDate);
+        // newGames.add(g);
+        // }
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, rs);
         return newGames;
     }
 
@@ -182,7 +198,7 @@ public class GamePlayerDAO
         // closeAll(conn, stmt, rs);
         // return 0;
 
-        return 2.5f;
+        return 0.5f;
     }
 
     /**
@@ -309,7 +325,38 @@ public class GamePlayerDAO
 
     public List<Player> getPlayersByGame(long gameId)
     {
-        return null;
+
+        List<Player> players = new ArrayList<Player>();
+        for (int i = 0; i < 10; i++)
+        {
+            Player p = new Player();
+            if (i % 2 == 0)
+            {
+                p.setId(583633830l);
+                p.setPosition(0);
+                p.setRating(4.5f);
+            }
+            if (i % 3 == 0)
+            {
+                p.setId(100002895406629l);
+                p.setPosition(1);
+                p.setRating(2.5f);
+            }
+            if (i % 4 == 0)
+            {
+                p.setId(100002216860399l);
+                p.setPosition(2);
+                p.setRating(0.5f);
+            }
+            if (i % 5 == 0)
+            {
+                p.setId(100003288984816l);
+                p.setPosition(3);
+                p.setRating(5.0f);
+            }
+            players.add(p);
+        }
+        return players;
     }
 
     private static void closeAll(Connection conn, Statement ps, ResultSet rs)
