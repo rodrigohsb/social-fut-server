@@ -13,15 +13,16 @@ import com.google.gson.Gson;
 public class GameWS
 {
 
-    public void createGame(String title, String address, Date startDate, Date finishDate)
+    public String createGame(String title, String address, Date startDate, Date finishDate)
     {
         try
         {
-            new GameDAO().createGame(title, address, startDate, finishDate);
+            Game g = new GameDAO().createGame(title, address, startDate, finishDate);
+            return String.valueOf(g.getId());
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            return "NOK";
         }
     }
 
@@ -58,9 +59,9 @@ public class GameWS
         return json.toJson(oldGames);
     }
 
-    public String getNewGames(long id)
+    public String getNewGames(long userId)
     {
-        List<Game> newGames = new GamePlayerDAO().getNewGames(id);
+        List<Game> newGames = new GamePlayerDAO().getNewGames(userId);
         Gson json = new Gson();
         return json.toJson(newGames);
     }
