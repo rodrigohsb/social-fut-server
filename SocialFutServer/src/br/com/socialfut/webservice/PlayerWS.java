@@ -7,12 +7,13 @@ import com.google.gson.Gson;
 
 public class PlayerWS
 {
-    public void createPlayer(long userId, String deviceRegId, int position)
+    public String createPlayer(long userId, String deviceRegId, int position)
     {
         new PlayerDAO().createPlayer(userId, deviceRegId, position);
+        return "OK";
     }
 
-    public void updateDevice(long userId, String deviceRegId)
+    public String updateDevice(long userId, String deviceRegId)
     {
 
         PlayerDAO playerDAO = new PlayerDAO();
@@ -22,11 +23,13 @@ public class PlayerWS
         {
             playerDAO.updateDevice(userId, deviceRegId);
         }
+        return "OK";
     }
 
-    public void updateRating(long userId, float rating)
+    public String updateRating(long userId, float rating)
     {
         new PlayerDAO().updateRating(userId, rating);
+        return "OK";
     }
 
     public Player getPlayer(long id)
