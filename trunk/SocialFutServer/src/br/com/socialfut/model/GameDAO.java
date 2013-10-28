@@ -26,7 +26,7 @@ public class GameDAO
      * @param userId
      * @return
      */
-    public void createGame(String title, String address, Date startDate, Date finishDate) throws Exception
+    public Game createGame(String title, String address, Date startDate, Date finishDate) throws Exception
     {
 
         StringBuilder query = new StringBuilder("insert into game");
@@ -37,44 +37,86 @@ public class GameDAO
         stmt = conn.createStatement();
         stmt.execute(query.toString());
         closeAll(conn, stmt, null);
+        return getGame(title, address, startDate, finishDate);
+    }
 
+    public Game getGame(String title, String address, Date startDate, Date finishDate)
+    {
+
+        Game g = new Game(1, "Titulo XPTO", "Rua Qualquer", new Date(), new Date(), new Date());
+        return g;
+
+        // StringBuilder query = new StringBuilder("select * from game");
+        // query.append(" where title = "' + title +'");
+        // query.append(" and address = "' + address +'");
+        // query.append(" and startDate = " + startDate +");
+        // query.append(" and finishDate = " + finishDate);
+        //
+        // Statement stmt = null;
+        // ResultSet rs = null;
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // rs = stmt.executeQuery(query.toString());
+        // if (rs != null)
+        // {
+        // long id = rs.getLong("ID");
+        // String title = rs.getString("title");
+        // String address = rs.getString("address");
+        // Date createdDate = rs.getDate("createdDate");
+        // Date startDate = rs.getDate("startDate");
+        // Date finishDate = rs.getDate("finishDate");
+        //
+        // Game g = new Game(id, title, address, createdDate, startDate,
+        // finishDate);
+        // return g;
+        // }
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, null);
+        //
+        // return null;
     }
 
     public Game getGameById(long gameId)
     {
-        
-        Game g = new Game(1, "Qualquer Titulo", "Rua Qualquer", new Date(), new Date(), new Date());
+
+        Game g = new Game(1, "Titulo XPTO", "Rua Qualquer", new Date(), new Date(), new Date());
         return g;
-        
-//        StringBuilder query = new StringBuilder("select * from game");
-//        query.append(" where id = " + gameId);
-//
-//        Statement stmt = null;
-//        ResultSet rs = null;
-//        try
-//        {
-//            stmt = conn.createStatement();
-//            rs = stmt.executeQuery(query.toString());
-//            if (rs != null)
-//            {
-//                long id = rs.getLong("ID");
-//                String title = rs.getString("title");
-//                String address = rs.getString("address");
-//                Date createdDate = rs.getDate("createdDate");
-//                Date startDate = rs.getDate("startDate");
-//                Date finishDate = rs.getDate("finishDate");
-//
-//                Game g = new Game(id, title, address, createdDate, startDate, finishDate);
-//                return g;
-//            }
-//        }
-//        catch (SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        closeAll(conn, stmt, null);
-//
-//        return null;
+
+        // StringBuilder query = new StringBuilder("select * from game");
+        // query.append(" where id = " + gameId);
+        //
+        // Statement stmt = null;
+        // ResultSet rs = null;
+        // try
+        // {
+        // stmt = conn.createStatement();
+        // rs = stmt.executeQuery(query.toString());
+        // if (rs != null)
+        // {
+        // long id = rs.getLong("ID");
+        // String title = rs.getString("title");
+        // String address = rs.getString("address");
+        // Date createdDate = rs.getDate("createdDate");
+        // Date startDate = rs.getDate("startDate");
+        // Date finishDate = rs.getDate("finishDate");
+        //
+        // Game g = new Game(id, title, address, createdDate, startDate,
+        // finishDate);
+        // return g;
+        // }
+        // }
+        // catch (SQLException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // closeAll(conn, stmt, null);
+        //
+        // return null;
     }
 
     private static void closeAll(Connection conn, Statement ps, ResultSet rs)
