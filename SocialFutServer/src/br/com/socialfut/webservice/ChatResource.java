@@ -12,7 +12,7 @@ import br.com.socialfut.utils.Constants;
 
 import com.google.android.gcm.server.Message;
 
-@Path("/chat")
+@Path(Constants.SLASH + Constants.CHAT)
 public class ChatResource
 {
 
@@ -22,9 +22,8 @@ public class ChatResource
     public String sendMessage(@PathParam("from") long from, @PathParam("to") long to, String msg)
     {
 
-        // PlayerWS playerWS = new PlayerWS();
-        // Player player = playerWS.getPlayer(to);
-        Player player = new Player();
+        PlayerWS playerWS = new PlayerWS();
+        Player player = playerWS.getPlayer(to);
         for (Player p : Constants.players)
         {
             if (p.getId() == to)
@@ -34,8 +33,7 @@ public class ChatResource
         }
 
         Message message = new Message.Builder().addData("msg", from + Constants.SEMICOLON + msg).build();
-//        GCMSender.sendMessage(player.getDeviceRegistrationId(), message);
-        GCMSender.sendMessage("APA91bFmbzE_yj8PDuctVmUqZA-wHUbQSAstLZk5pVkqnimC29HeNx36MgoFU6uO292ZV6nOuhC03aSNFLMeQEqyt4AbqqAVKlRCHVAzxtOC-12wljjjA5aH2LdfTKN5j7cEsVy2DqfZ", message);
+        GCMSender.sendMessage(player.getDeviceRegistrationId(), message);
         return "OK";
     }
 }
