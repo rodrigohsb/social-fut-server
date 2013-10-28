@@ -15,7 +15,7 @@ public class PlayerDAO
 
     public PlayerDAO()
     {
-//        this.conn = ConnectionFactory.getConnection();
+        this.conn = ConnectionFactory.getConnection();
     }
 
     // public Player getPlayerById(long userId, boolean lookForDevice)
