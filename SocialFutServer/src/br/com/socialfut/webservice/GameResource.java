@@ -23,7 +23,8 @@ public class GameResource
 
     @PUT
     @Path("/createGame/{startDate}/{finishDate}")
-    public String createGame(String address,String title,@PathParam("startDate")long startDate,@PathParam("finishDate") long finishDate)
+    public String createGame(String address, String title, @PathParam("startDate") long startDate,
+            @PathParam("finishDate") long finishDate)
     {
         Date start = new Date(startDate);
         Date finish = new Date(finishDate);
@@ -82,6 +83,7 @@ public class GameResource
     public String sendConfirmation(@PathParam("from") long userId, @PathParam("gameId") int gameId)
     {
         GameWS gameWS = new GameWS();
+
         // Todos jogadores que estao na partida
         List<Player> players = gameWS.getListPlayersByGame(gameId);
 
@@ -104,11 +106,11 @@ public class GameResource
 
         GameWS gameWS = new GameWS();
 
-        // Todos jogadores que estao na partida
-        List<Player> players = gameWS.getListPlayersByGame(gameId);
-
         // Remove o jogador na partida
         gameWS.removePlayerFromGame(gameId, userId);
+
+        // Todos jogadores que estao na partida
+        List<Player> players = gameWS.getListPlayersByGame(gameId);
 
         for (Player p : players)
         {
@@ -120,16 +122,28 @@ public class GameResource
     }
 
     @GET
-    @Path("/invite/{gameId}/from/to")
-    public String invite(@PathParam("gameId") int gameId, @PathParam("from") long from, @PathParam("to") long to)
+    @Path("/invite/{gameId}/{from}/{parameter:.*}")
+    public String invite(@PathParam("gameId") int gameId, @PathParam("from") long from,
+            @PathParam("parameter") String parameter)
     {
-        PlayerWS playerWS = new PlayerWS();
-        Player guest = playerWS.getPlayer(from);
+        String[] teste = parameter.split(Constants.SLASH);
 
-        Message message = new Message.Builder().addData("msg",
-                from + Constants.SEMICOLON + Constants.INVITATION + Constants.SEMICOLON + gameId).build();
-        GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
+        for (int i = 0; i < teste.length; i++)
+        {
+            PlayerWS playerWS = new PlayerWS();
+            try
+            {
+                Player guest = playerWS.getPlayer(Long.valueOf(teste[i]));
+                Message message = new Message.Builder().addData("msg",
+                        from + Constants.SEMICOLON + Constants.INVITATION + Constants.SEMICOLON + gameId).build();
+                GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
+            }
+            catch (Exception e)
+            {
+                continue;
+            }
 
+        }
         return "OK";
     }
 }
