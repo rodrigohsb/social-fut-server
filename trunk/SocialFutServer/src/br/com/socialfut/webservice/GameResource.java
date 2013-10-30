@@ -123,26 +123,27 @@ public class GameResource
 
     @GET
     @Path("/invite/{gameId}/{from}/{parameter:.*}")
-    public String invite(@PathParam("gameId") int gameId, @PathParam("from") long from,
+    public String invite(@PathParam("gameId") final int gameId, @PathParam("from") final long from,
             @PathParam("parameter") String parameter)
     {
-        String[] teste = parameter.split(Constants.SLASH);
+        final String[] users = parameter.split(Constants.SLASH);
 
-        for (int i = 0; i < teste.length; i++)
+        final PlayerWS playerWS = new PlayerWS();
+
+        for (int i = 0; i < users.length; i++)
         {
-            PlayerWS playerWS = new PlayerWS();
-            try
+            final int count = i;
+            new Thread(new Runnable()
             {
-                Player guest = playerWS.getPlayer(Long.valueOf(teste[i]));
-                Message message = new Message.Builder().addData("msg",
-                        from + Constants.SEMICOLON + Constants.INVITATION + Constants.SEMICOLON + gameId).build();
-                GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
-            }
-            catch (Exception e)
-            {
-                continue;
-            }
-
+                @Override
+                public void run()
+                {
+                    Player guest = playerWS.getPlayer(Long.valueOf(users[count]));
+                    Message message = new Message.Builder().addData("msg",
+                            from + Constants.SEMICOLON + Constants.INVITATION + Constants.SEMICOLON + gameId).build();
+                    GCMSender.sendMessage(guest.getDeviceRegistrationId(), message);
+                }
+            }).start();
         }
         return "OK";
     }
