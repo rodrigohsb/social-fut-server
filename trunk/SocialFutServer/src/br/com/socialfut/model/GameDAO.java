@@ -29,14 +29,14 @@ public class GameDAO
     public Game createGame(String title, String address, Date startDate, Date finishDate) throws Exception
     {
 
-        StringBuilder query = new StringBuilder("insert into game");
-        query.append(" values(" + title + "," + address + "," + new Date() + "," + startDate + "," + finishDate + ")");
-
-        Statement stmt = null;
-
-        stmt = conn.createStatement();
-        stmt.execute(query.toString());
-        closeAll(conn, stmt, null);
+//        StringBuilder query = new StringBuilder("insert into game");
+//        query.append(" values(" + title + "," + address + "," + new Date() + "," + startDate + "," + finishDate + ")");
+//
+//        Statement stmt = null;
+//
+//        stmt = conn.createStatement();
+//        stmt.execute(query.toString());
+//        closeAll(conn, stmt, null);
         return getGame(title, address, startDate, finishDate);
     }
 
